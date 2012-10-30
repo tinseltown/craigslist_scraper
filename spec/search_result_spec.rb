@@ -1,4 +1,4 @@
-require_relative '../search_result'
+require_relative '../lib/search_result'
 require 'nokogiri'
 require 'vcr'
 require 'open-uri'
