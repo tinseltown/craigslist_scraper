@@ -1,6 +1,9 @@
+require 'nokogiri'
+
 module CLScraper
 
   class Posting
+    
     attr_reader :posted_on, :price, :location, :category, :url, :title
   
     def parse(data_node)

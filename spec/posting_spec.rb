@@ -3,6 +3,6 @@ include CLScraper
 
 module CLScraper
   describe Posting do
-
+    
   end
 end

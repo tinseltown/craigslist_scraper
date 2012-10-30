@@ -1,6 +1,10 @@
+require './posting'
+require 'nokogiri'
+
 module CLScraper
 
   class SearchResult
+
     attr_reader :postings, :created_at
 
     def initialize
@@ -17,9 +21,7 @@ module CLScraper
     def add_posting(row)
       @postings << Posting.from_row_data(row)
     end
+
   end
 
-end
-
-class Posting
 end

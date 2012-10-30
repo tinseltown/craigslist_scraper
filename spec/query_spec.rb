@@ -6,7 +6,7 @@ module CLScraper
   describe Query do
 
 # ````query_url = "http://www.yahoo.com"
-    let(:query) { Query.new("http://www.yahoo.com") }
+    let(:query) { Query.new("http://sfbay.craigslist.org/search/ccc?query=roller+skates&catAbb=sss&srchType=A") }
 
     context 'when the user passes in a valid URL representing a craigslist search' do
       describe '#initialize(query_as_url)' do
@@ -37,6 +37,12 @@ module CLScraper
 
         it 'returns true for a valid url' do
           query.valid_url?("http://google.com").should be true
+        end
+      end
+
+      describe '#search_terms' do
+        it 'parses out the search terms from the query_as_url, formatted as a string' do
+          query.search_terms.should be_an_instance_of(String)
         end
       end
     end

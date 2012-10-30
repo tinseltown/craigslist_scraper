@@ -1,7 +1,9 @@
 require 'open-uri'
 
 module CLScraper
+
   class Query
+
     attr_accessor :query_url
 
     def initialize(url)
@@ -21,11 +23,21 @@ module CLScraper
       is_valid == nil ? false : true
     end
 
-  end
-end
+    def search_terms
+      # text after "&query=" includes our terms, plus extra query parameters
+      query_terms_raw = query_url.split("query=")[1]
+      # text before "&"--[0]--is our terms--[1] is unneeded text
+      query_terms_with_separator = query_terms_raw.split("&")[0]
+      # substitute a space for the "+" separator used in url
+      query_terms_pretty = query_terms_with_separator.gsub(/\+/, "\s")
 
-# query = CLScraper::Query.new("http://www.google.com")
-# results_data = query.results_data.class
-# query.results_data
-# scott = CLScraper::Query.new("htp://sdf.c")
-# p scott.query_url
+      return query_terms_pretty
+    end
+
+
+  end
+
+end
+  
+# query = CLScraper::Query.new("http://sfbay.craigslist.org/search/ccc?query=roller+skates&catAbb=sss&srchType=A")
+# puts query.search_terms
