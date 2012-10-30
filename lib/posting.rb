@@ -3,7 +3,7 @@ require 'nokogiri'
 module CLScraper
 
   class Posting
-    
+
     attr_reader :posted_on, :price, :location, :category, :url, :title
     attr_accessor :search_result_id
 
@@ -28,6 +28,27 @@ module CLScraper
       row_data.children.each { |data_node| posting.parse(data_node) }
       posting
     end
+
+     def add_posting(row)
+        @postings << Posting.from_row_data(row)
+      end
+
+
+
+      def add_postings_to_db
+        @db.execute <<-SQL
+        INSERT INTO postings
+        ('posted_on', 'price', 'location', 'category', 'url', 'title', 'created_at', 'updated_at', 'search_result_id')
+        VALUES ("#{posted_on}", "#{price}",
+        "#{location}", "#{category}", "#{url}",
+        "#{title}", DATETIME('now'), DATETIME('now'), "#{search_result_id}");
+        SQL
+      end
+
+      def save_postings
+        postings.each { |posting| posting.add_postings_to_db }
+      end
+
 
     def class_name(data_node)
       if data_node.attr('class') != nil
