@@ -1,7 +1,7 @@
 module CLScraper
 
   class Posting
-    attr_reader :date, :price, :location, :category, :url, :title
+    attr_reader :posted_on, :price, :location, :category, :url, :title
   
     def parse(data_node)
       puts class_name(data_node)
@@ -39,7 +39,7 @@ module CLScraper
 
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     def set_date!(date_data_node)
-      @date = date_data_node.content.strip
+      @posted_on = date_data_node.content.strip
     end
 
     def set_price!(price_data_node)
