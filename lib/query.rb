@@ -34,10 +34,33 @@ module CLScraper
       return query_terms_pretty
     end
 
+   def create_queries_table
+      @db.execute <<-SQL
+      CREATE TABLE 'queries' (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      url varchar(300),
+      search_terms varchar (200),
+      created_at DATETIME,
+      updated_at DATETIME,
+      user_id integer,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+      )
+      SQL
+    end
 
+    def add_queries_to_db
+      @db.execute <<-SQL
+      INSERT INTO queries
+      ('url', 'search_terms', 'user_id', 'created_at', 'updated_at')
+      VALUES ("#{url}", "#{search_terms}", "#{user_id}", DATETIME('now'), DATETIME('now'))
+      SQL
+    end
+
+    def save_queries
+      @postings.add_search_results_to_db
+    end
   end
-
 end
-  
+
 # query = CLScraper::Query.new("http://sfbay.craigslist.org/search/ccc?query=roller+skates&catAbb=sss&srchType=A")
 # puts query.search_terms

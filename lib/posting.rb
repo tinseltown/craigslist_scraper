@@ -5,7 +5,8 @@ module CLScraper
   class Posting
     
     attr_reader :posted_on, :price, :location, :category, :url, :title
-  
+    attr_accessor :search_result_id
+
     def parse(data_node)
       case class_name(data_node)
       when 'itemdate'
@@ -24,7 +25,7 @@ module CLScraper
 
     def self.from_row_data(row_data)
       posting = self.new
-      row_data.children.each { |data_node| posting.parse(data_node)}
+      row_data.children.each { |data_node| posting.parse(data_node) }
       posting
     end
 
