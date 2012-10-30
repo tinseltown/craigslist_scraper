@@ -2,6 +2,7 @@ module CLScraper
 
   class Posting
     attr_reader :posted_on, :price, :location, :category, :url, :title
+    attr_accessor :search_result_id
 
     def parse(data_node)
       case class_name(data_node)
@@ -21,7 +22,7 @@ module CLScraper
 
     def self.from_row_data(row_data)
       posting = self.new
-      row_data.children.each { |data_node| posting.parse(data_node)}
+      row_data.children.each { |data_node| posting.parse(data_node) }
       posting
     end
 
@@ -58,37 +59,6 @@ module CLScraper
 
     def set_title!(url_title_data_node)
       @title = url_title_data_node.content
-    end
-
-# db creation and population
-    def create_postings_table
-      @db.execute <<-SQL
-      CREATE TABLE "postings" (
-      id integer, auto_increment, primary key,
-      posted_on varchar(100),
-      price varchar(100),
-      location varchar(250),
-      category varchar(100),
-      url varchar(250),
-      title varchar(250),
-      search_result_id, integer,
-      created_at, DATETIME,
-      updated_at, DATETIME,
-      FOREIGN KEY (search_result_id) REFERENCES search_results(id)
-      )
-      SQL
-    end
-
-    def postings_to_db_fields
-      count = 0
-      @postings.each do |posting|
-        count += 1
-        @db.execute <<-SQL
-        INSERT INTO postings
-        VALUES ("#{count}",  "#{posting.posted_on}", "#{posting.price}",
-        "#{posting.location}", "#{posting.category}", "#{posting.url}",
-        "#{posting.title}", ); # foreign key needs to go here...check syntax, and created_at and updated_at
-        SQL
     end
 
   end
