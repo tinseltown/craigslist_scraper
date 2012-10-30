@@ -1,4 +1,3 @@
-# require 'open-uri'
 module CLScraper
 
   class SearchResult
@@ -18,22 +17,9 @@ module CLScraper
     def add_posting(row)
       @postings << Posting.from_row_data(row)
     end
-
-
-
   end
 
 end
 
 class Posting
-
-  # def self.from_row_data(row_data)
-  #   @data = row_data
-  # end
-
-  # def to_s
-  #   "#{@data}"
-  # end
 end
-
-# page = open("http://sfbay.craigslist.org/search/?areaID=1&subAreaID=&query=macbook+pro&catAbb=sss")
