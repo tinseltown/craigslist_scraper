@@ -18,6 +18,7 @@ module CLScraper
       @postings << Posting.from_row_data(row)
     end
 
+
     def create_postings_table
       @db.execute <<-SQL
       CREATE TABLE "postings" (
@@ -46,11 +47,66 @@ module CLScraper
       SQL
     end
 
-
     def save_postings
       postings.each { |posting| posting.add_postings_to_db }
     end
+
+    def create_search_result_table
+      @db.execute <<-SQL
+      CREATE TABLE "search_results" (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      created_at DATETIME,
+      updated_at DATETIME,
+      query_id integer,
+      FOREIGN KEY (query_id) REFERENCES queries(id)
+      )
+      SQL
+    end
+
+    def add_search_results_to_db
+      @db.execute <<-SQL
+      INSERT INTO search_results
+      ('query_id', 'created_at', 'updated_at')
+      VALUES ("#{query_id}", DATETIME('now'), DATETIME('now'))
+      SQL
+    end
+
+    def save_search_results
+      @postings.add_search_results_to_db
+    end
+
   end
 
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
