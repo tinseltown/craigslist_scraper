@@ -4,11 +4,12 @@ module CLScraper
 
   class Query
 
-    attr_accessor :query_url
+    attr_reader :query_url, :id
 
-    def initialize(url)
+    def initialize(url, id=0)
       if valid_url?(url)
         @query_url = url
+        @id = id
       else
         raise "invalid URL"
       end
@@ -34,19 +35,19 @@ module CLScraper
       return query_terms_pretty
     end
 
-
-
-    def add_queries_to_db
+    def add_to_db
       @db.execute <<-SQL
       INSERT INTO queries
       ('url', 'search_terms', 'user_id', 'created_at', 'updated_at')
       VALUES ("#{url}", "#{search_terms}", "#{user_id}", DATETIME('now'), DATETIME('now'))
       SQL
+      set_query_id
     end
 
-    def save_queries
-      @postings.add_search_results_to_db
+    def set_query_id
+      @id = @db.execute("select last_rowid() from queries")
     end
+
   end
 end
 

@@ -33,9 +33,7 @@ module CLScraper
         @postings << Posting.from_row_data(row)
       end
 
-
-
-      def add_postings_to_db
+      def add_to_db
         @db.execute <<-SQL
         INSERT INTO postings
         ('posted_on', 'price', 'location', 'category', 'url', 'title', 'created_at', 'updated_at', 'search_result_id')
@@ -46,9 +44,8 @@ module CLScraper
       end
 
       def save_postings
-        postings.each { |posting| posting.add_postings_to_db }
+        @postings.each { |posting| posting.add_to_db }
       end
-
 
     def class_name(data_node)
       if data_node.attr('class') != nil
