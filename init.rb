@@ -1,5 +1,9 @@
 module Initializer
 
+  def add_db
+    @db = SQLite3::Database.new('clscraper.db')
+  end
+
   def create_postings_table
     @db.execute <<-SQL
     CREATE TABLE 'postings' (
