@@ -21,7 +21,7 @@ module CLScraper
 
     def create_postings_table
       @db.execute <<-SQL
-      CREATE TABLE "postings" (
+      CREATE TABLE 'postings' (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       posted_on varchar(100),
       price varchar(100),
@@ -53,7 +53,7 @@ module CLScraper
 
     def create_search_result_table
       @db.execute <<-SQL
-      CREATE TABLE "search_results" (
+      CREATE TABLE 'search_results' (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       created_at DATETIME,
       updated_at DATETIME,
