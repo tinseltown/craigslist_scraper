@@ -4,7 +4,6 @@ module CLScraper
     attr_reader :posted_on, :price, :location, :category, :url, :title
   
     def parse(data_node)
-      puts class_name(data_node)
       case class_name(data_node)
       when 'itemdate'
         set_date!(data_node)
@@ -37,9 +36,8 @@ module CLScraper
       name
     end
 
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     def set_date!(date_data_node)
-      @posted_on = date_data_node.content.strip
+      @posted_on = date_data_node.content.strip + " #{Time.now.year}"
     end
 
     def set_price!(price_data_node)
@@ -65,28 +63,3 @@ module CLScraper
   end
 
 end
-
-
-
-
-class SearchResult
-  attr_reader :postings, :created_at
-
-  def initialize
-    @postings = []
-    @created_at = Time.now
-  end
-
-  def self.from_query(result_data_file)
-    result = self.new
-    Nokogiri::HTML(result_data_file).css('.row').each { |row| result.add_posting(row) }
-    result
-  end
-
-  def add_posting(row)
-    @postings << Posting.from_row_data(row)
-  end
-end
- 
-
-
