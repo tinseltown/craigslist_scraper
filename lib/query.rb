@@ -2,8 +2,6 @@ require 'open-uri'
 require '../init'
 require './search_result'
 
-
-
 module CLScraper
 
   class Query
@@ -53,8 +51,3 @@ module CLScraper
 
   end
 end
-
-query = CLScraper::Query.new("http://sfbay.craigslist.org/search/ccc?query=roller+skates&catAbb=sss&srchType=A")
-query.add_to_db(2)
-search = CLScraper::SearchResult.from_query(query.results_data)
-search.add_to_db(query.id)
