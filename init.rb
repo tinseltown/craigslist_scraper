@@ -50,6 +50,21 @@ module Initializer
    SQL
   end
 
+  def create_users_table
+    db.execute <<-SQL
+    CREATE TABLE IF NOT EXISTS 'users' (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    primary_email varchar(150),
+    password varchar(150),
+    alt_email_1 varchar(150),
+    alt_email_2 varchar(150),
+    digest_frequency integer,
+    created_at DATETIME,
+    updated_at DATETIME
+    )
+    SQL
+  end
+
 end
 
 include Initializer
@@ -58,3 +73,4 @@ Initializer::db
 Initializer::create_postings_table
 Initializer::create_queries_table
 Initializer::create_search_result_table
+Initializer::create_users_table
