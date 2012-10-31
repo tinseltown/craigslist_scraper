@@ -1,12 +1,14 @@
+require 'sqlite3'
+
 module Initializer
 
-  def add_db
-    @db = SQLite3::Database.new('clscraper.db')
+  def db
+    SQLite3::Database.new('clscraper.db')
   end
 
   def create_postings_table
-    @db.execute <<-SQL
-    CREATE TABLE 'postings' (
+    db.execute <<-SQL
+    CREATE TABLE IF NOT EXISTS 'postings' (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     posted_on varchar(100),
     price varchar(100),
@@ -23,8 +25,8 @@ module Initializer
   end
 
   def create_queries_table
-     @db.execute <<-SQL
-     CREATE TABLE 'queries' (
+     db.execute <<-SQL
+     CREATE TABLE IF NOT EXISTS 'queries' (
      id INTEGER PRIMARY KEY AUTOINCREMENT,
      url varchar(300),
      search_terms varchar (200),
@@ -37,8 +39,8 @@ module Initializer
   end
 
   def create_search_result_table
-   @db.execute <<-SQL
-   CREATE TABLE 'search_results' (
+   db.execute <<-SQL
+   CREATE TABLE IF NOT EXISTS 'search_results' (
    id INTEGER PRIMARY KEY AUTOINCREMENT,
    created_at DATETIME,
    updated_at DATETIME,
@@ -49,3 +51,10 @@ module Initializer
   end
 
 end
+
+include Initializer
+
+Initializer::db
+Initializer::create_postings_table
+Initializer::create_queries_table
+Initializer::create_search_result_table
