@@ -1,3 +1,0 @@
-/Users/apprentice/.rvm/rubies/ruby-1.9.3-p194/lib/ruby/site_ruby/1.9.1/rubygems/custom_require.rb:36:in `require': cannot load such file -- ./query (LoadError)
-	from /Users/apprentice/.rvm/rubies/ruby-1.9.3-p194/lib/ruby/site_ruby/1.9.1/rubygems/custom_require.rb:36:in `require'
-	from /Users/apprentice/Desktop/craigslist_scraper/lib/main.rb:1:in `<main>'

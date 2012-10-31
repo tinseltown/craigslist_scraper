@@ -1,18 +1,19 @@
 require 'open-uri'
-require '../init'
-require './search_result'
+require_relative '../init'
+require_relative './search_result'
 
 module CLScraper
 
   class Query
     include Initializer
 
-    attr_reader :query_url, :id
+    attr_reader :query_url, :id, :digest_frequency
 
-    def initialize(url, id=0)
+    def initialize(url, digest_frequency = 1, id=0)
       if valid_url?(url)
         @query_url = url
         @id = id
+        @digest_frequency = digest_frequency
       else
         raise "invalid URL"
       end
@@ -39,8 +40,8 @@ module CLScraper
     def add_to_db(user_id)
       db.execute <<-SQL
       INSERT INTO queries
-      ('url', 'search_terms', 'user_id', 'created_at', 'updated_at')
-      VALUES ("#{query_url}", "#{search_terms}", "#{user_id}", DATETIME('now'), DATETIME('now'))
+      ('url', 'search_terms', 'digest_frequency', 'user_id', 'created_at', 'updated_at')
+      VALUES ("#{query_url}", "#{search_terms}", "#{digest_frequency}", "#{user_id}", DATETIME('now'), DATETIME('now'))
       SQL
       set_query_id
     end

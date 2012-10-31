@@ -1,6 +1,6 @@
-require './posting'
+require_relative './posting'
 require 'nokogiri'
-require '../init'
+require_relative '../init'
 
 module CLScraper
 
@@ -44,5 +44,5 @@ module CLScraper
     end
 
   end
-  
+
 end

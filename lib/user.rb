@@ -1,4 +1,4 @@
-require '../init'
+require_relative '../init'
 
 class User
   include Initializer
@@ -10,28 +10,27 @@ class User
   # *********
   # user can have multiple addresses
   # user can change the frequency of the emails they receive
-  attr_reader :email, :password, :digest_frequency, :alt_email_1, :alt_email_2
+  attr_reader :email, :alt_email_1, :alt_email_2, :id
 
-  def initialize(email, password, digest_frequency, alt_email_1 = nil, alt_email_2 = nil)
+  def initialize(email, alt_email_1 = nil, alt_email_2 = nil, id = nil)
     @primary_email = email
-    @password =password
-    @digest_frequency = digest_frequency
     @alt_email_1 = alt_email_1
     @alt_email_2 = alt_email_2
+    @id = id
   end
 
   def add_to_db
     db.execute <<-SQL
     INSERT INTO users
-    ('primary_email', 'password', 'digest_frequency', 'alt_email_1', 'alt_email_2', 'created_at', 'updated_at')
-    VALUES ("#{@primary_email}", "#{@password}", "#{@digest_frequency}", "#{@alt_email_1}", "#{@alt_email_2}",
+    ('primary_email', 'alt_email_1', 'alt_email_2', 'created_at', 'updated_at')
+    VALUES ("#{@primary_email}", "#{@alt_email_1}", "#{@alt_email_2}",
     DATETIME('now'), DATETIME('now'))
     SQL
+    set_user_id####
   end
 
+  def set_user_id
+    @id = db.execute("SELECT MAX(id) FROM users")[0][0]
+  end
 
 end
-
-# testing information
-billy = User.new("mail@bonnefil.com", "testerpassword", 5, "stuff@bonnefil.com")
-billy.add_to_db

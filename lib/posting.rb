@@ -1,5 +1,5 @@
 require 'nokogiri'
-require '../init'
+require_relative '../init'
 
 module CLScraper
 

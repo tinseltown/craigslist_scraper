@@ -5,7 +5,7 @@
 
 # Example:
 #
- set :output, "/Users/apprentice/Desktop/craigslist_scraper/test.log"
+set :output, "/Users/apprentice/Desktop/craigslist_scraper/test.log"
 #
 # every 2.hours do
 #   command "/usr/bin/some_great_command"
@@ -19,7 +19,7 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every 1.day, :at => '8:39 pm' do
+every 1.day, :at => '9:15 am' do
 #  command "/usr/bin/env ruby /Users/apprentice/svn/thewall/script/runner /Users/kip/svn/thewall/app/delete_old_posts.rb"
-  command "ruby /Users/apprentice/Desktop/craigslist_scraper/lib/main.rb"
+  command "ruby ~/Desktop/craigslist_scraper/lib/cron.rb"
 end

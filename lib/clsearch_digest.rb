@@ -1,4 +1,4 @@
-require '../init'
+require_relative '../init'
 require 'mail'
 
 module CLScraper
@@ -16,7 +16,7 @@ module CLScraper
         posting_price
         posting_location
         posting_category
-        posting_url 
+        posting_url
     end
 
     def posting_posted_on
@@ -59,7 +59,7 @@ module CLScraper
     def digest_body
       digest_body_string = ""
       posted_on.length.times do |index|
-        digest_body_string << "#{print_index(index)}) #{posted_on[index].first} - #{title[index].first} - #{price[index].first} "
+        digest_body_string << "#{print_index(index)}) #{posted_on[index].first} - #{title[index].first} - #{price[index].first}\n "
         digest_body_string << "(#{location[index].first}) #{category[index].first} | #{url[index].first}\n"
       end
       digest_body_string
