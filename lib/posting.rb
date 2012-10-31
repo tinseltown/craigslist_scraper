@@ -1,8 +1,10 @@
 require 'nokogiri'
+require '../init'
 
 module CLScraper
 
   class Posting
+    include Initializer
 
     attr_reader :posted_on, :price, :location, :category, :url, :title
     attr_accessor :search_result_id
@@ -29,23 +31,19 @@ module CLScraper
       posting
     end
 
-     def add_posting(row)
-        @postings << Posting.from_row_data(row)
-      end
 
-      def add_to_db
-        @db.execute <<-SQL
-        INSERT INTO postings
-        ('posted_on', 'price', 'location', 'category', 'url', 'title', 'created_at', 'updated_at', 'search_result_id')
-        VALUES ("#{posted_on}", "#{price}",
-        "#{location}", "#{category}", "#{url}",
-        "#{title}", DATETIME('now'), DATETIME('now'), "#{search_result_id}");
-        SQL
-      end
 
-      def save_postings
-        @postings.each { |posting| posting.add_to_db }
-      end
+    def add_to_db(search_result_id)
+      db.execute <<-SQL
+      INSERT INTO postings
+      ('posted_on', 'price', 'location', 'category', 'url', 'title', 'created_at', 'updated_at', 'search_result_id')
+      VALUES ("#{posted_on}", "#{price}",
+      "#{location}", "#{category}", "#{url}",
+      "#{title}", DATETIME('now'), DATETIME('now'), "#{search_result_id}")
+      SQL
+    end
+
+
 
     def class_name(data_node)
       if data_node.attr('class') != nil
@@ -67,7 +65,7 @@ module CLScraper
     end
 
     def set_location!(loc_data_node)
-      @location = loc_data_node.content.strip
+      @location = loc_data_node.content.strip.gsub(/\(|\)/, "")
     end
 
     def set_category!(cat_data_node)
@@ -79,7 +77,16 @@ module CLScraper
     end
 
     def set_title!(url_title_data_node)
-      @title = url_title_data_node.content
+      @title = url_title_data_node.content.gsub(/\"/, " ")
+    end
+
+    def create
+      @posted_on = "Oct 29 2012"
+      @price = "$123"
+      @location = "San Francisco"
+      @category = "skates"
+      @url = "http://craigslist.com"
+      @title = "HERRO"
     end
 
   end

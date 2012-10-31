@@ -1,8 +1,13 @@
 require 'open-uri'
+require '../init'
+require './search_result'
+
+
 
 module CLScraper
 
   class Query
+    include Initializer
 
     attr_reader :query_url, :id
 
@@ -31,25 +36,25 @@ module CLScraper
       query_terms_with_separator = query_terms_raw.split("&")[0]
       # substitute a space for the "+" separator used in url
       query_terms_pretty = query_terms_with_separator.gsub(/\+/, "\s")
-
-      return query_terms_pretty
     end
 
-    def add_to_db
-      @db.execute <<-SQL
+    def add_to_db(user_id)
+      db.execute <<-SQL
       INSERT INTO queries
       ('url', 'search_terms', 'user_id', 'created_at', 'updated_at')
-      VALUES ("#{url}", "#{search_terms}", "#{user_id}", DATETIME('now'), DATETIME('now'))
+      VALUES ("#{query_url}", "#{search_terms}", "#{user_id}", DATETIME('now'), DATETIME('now'))
       SQL
       set_query_id
     end
 
     def set_query_id
-      @id = @db.execute("select last_rowid() from queries")
+      @id = db.execute("SELECT MAX(id) FROM queries")[0][0]
     end
 
   end
 end
 
-# query = CLScraper::Query.new("http://sfbay.craigslist.org/search/ccc?query=roller+skates&catAbb=sss&srchType=A")
-# puts query.search_terms
+query = CLScraper::Query.new("http://sfbay.craigslist.org/search/ccc?query=roller+skates&catAbb=sss&srchType=A")
+query.add_to_db(2)
+search = CLScraper::SearchResult.from_query(query.results_data)
+search.add_to_db(query.id)

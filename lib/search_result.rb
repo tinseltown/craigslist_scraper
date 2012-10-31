@@ -1,9 +1,11 @@
 require './posting'
 require 'nokogiri'
+require '../init'
 
 module CLScraper
 
   class SearchResult
+    include Initializer
 
     attr_reader :postings, :created_at, :id
 
@@ -28,7 +30,7 @@ module CLScraper
     end
 
     def add_to_db(query_id)
-      @db.execute <<-SQL
+      db.execute <<-SQL
       INSERT INTO search_results
       ('query_id', 'created_at', 'updated_at')
       VALUES ("#{query_id}", DATETIME('now'), DATETIME('now'))
@@ -38,7 +40,8 @@ module CLScraper
     end
 
     def set_search_result_id
-      @id = @db.execute("select last_rowid() from search_results")
+      @id = db.execute("SELECT MAX(id) FROM search_results")[0][0]
     end
+
   end
 end
