@@ -31,8 +31,6 @@ module CLScraper
       posting
     end
 
-
-
     def add_to_db(search_result_id)
       db.execute <<-SQL
       INSERT INTO postings
@@ -42,8 +40,6 @@ module CLScraper
       "#{title}", DATETIME('now'), DATETIME('now'), "#{search_result_id}")
       SQL
     end
-
-
 
     def class_name(data_node)
       if data_node.attr('class') != nil

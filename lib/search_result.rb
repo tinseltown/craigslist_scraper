@@ -44,4 +44,5 @@ module CLScraper
     end
 
   end
+  
 end
